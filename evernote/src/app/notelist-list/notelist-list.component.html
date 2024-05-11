@@ -1,0 +1,9 @@
+<div class="ui middle aligned selection divided list">
+  @for (notelist of notelists; track notelist) {
+    <a class="item">
+      <div class="content">
+        {{notelist.id}} | {{notelist.name}}
+      </div>
+    </a>
+  }
+</div>
