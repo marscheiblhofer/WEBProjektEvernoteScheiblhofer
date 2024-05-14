@@ -1,2 +1,6 @@
-<app-notelist-list>
-</app-notelist-list>
+@if(notelistListOn) {
+  <app-notelist-list (showDetailsEvent)="showNoteListDetails($event)">
+  </app-notelist-list>
+} @else if (notelistDetailsOn) {
+  <app-note-list [notelist]="notelist" (showNoteListListEvent)="showNoteListList()"></app-note-list>
+}

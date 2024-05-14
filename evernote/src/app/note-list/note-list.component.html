@@ -1,0 +1,31 @@
+@if (notelist) {
+<div class="ui segment">
+  <div class="ui two column very relaxed grid">
+    <div class="column">
+      <h1>{{notelist.name}}</h1>
+      Creator: {{notelist.creator.firstname}} {{notelist.creator.lastname}}
+      <h2>Notizen</h2>
+      <div class="ui middle aligned selection divided list">
+        @for (note of notelist.notes; track note) {
+          <a class="item" (click)="showNoteDetails(note)">
+            <div class="content">
+              {{note.id}} | {{note.title}}
+            </div>
+          </a>
+        }
+        <button (click)="showNoteListList()" class="ui red button">Zurück zur Übersicht</button>
+      </div>
+    </div>
+    <div class="column">
+      @if(noteDetailsOn) {
+        @if (note) {
+          {{note.title}}
+        }
+      } @else {
+        Kein Notiz wurde ausgewählt ...
+      }
+    </div>
+  </div>
+  <div class="ui vertical divider"></div>
+</div>
+}

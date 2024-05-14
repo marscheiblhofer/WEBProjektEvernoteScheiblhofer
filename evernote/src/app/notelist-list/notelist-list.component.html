@@ -1,9 +1,13 @@
 <div class="ui middle aligned selection divided list">
   @for (notelist of notelists; track notelist) {
-    <a class="item">
-      <div class="content">
-        {{notelist.id}} | {{notelist.name}}
-      </div>
+    <a class="item" (click)="showNotelistDetails(notelist)">
+      <!--<a class="item app-note-list" [notelist]="notelist">-->
+      <!--[ngClass]="active:isActive" TS:isActive:boolean=true-->
+      @if (notelist) {
+        <div class="content">
+          <div class="header">{{notelist.id}} | {{notelist.name}}</div>
+        </div>
+      }
     </a>
   }
 </div>

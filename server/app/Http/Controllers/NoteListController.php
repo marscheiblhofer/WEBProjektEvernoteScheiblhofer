@@ -12,7 +12,6 @@ class NoteListController extends Controller
 {
     public function index():JsonResponse
     {
-        //Eager Loading
         $notelists = Notelist::with(['creator', 'notes'])->get();
         return response()->json($notelists, 200);
     }

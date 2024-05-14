@@ -1,4 +1,5 @@
 export class Category {
-  constructor(public id:number, public category:string) {
+  constructor(public id:number,
+              public category:string) {
   }
 }
