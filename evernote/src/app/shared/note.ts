@@ -1,6 +1,7 @@
 import {Image} from "./image";
 export {Image} from "./image";
 import {Category} from "./category";
+import {Todo} from "./todo";
 export {Category} from "./category";
 
 export class Note {
@@ -9,7 +10,8 @@ export class Note {
               public description:string,
               public notelist_id: number,
               public images?: Image[],
-              public categories?: Category[]
+              public categories?: Category[],
+              public todos?: Todo[]
   ) {
   }
 }

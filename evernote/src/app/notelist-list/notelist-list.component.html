@@ -1,6 +1,6 @@
 <div class="ui middle aligned selection divided list">
   @for (notelist of notelists; track notelist) {
-    <a class="item" (click)="showNotelistDetails(notelist)">
+    <a class="item" [routerLink]="notelist.id.toString()">
       <!--<a class="item app-note-list" [notelist]="notelist">-->
       <!--[ngClass]="active:isActive" TS:isActive:boolean=true-->
       @if (notelist) {
@@ -10,4 +10,5 @@
       }
     </a>
   }
+  <button class="ui red button" [routerLink]="'/notelist-form'">Notizbuch hinzufügen</button>
 </div>

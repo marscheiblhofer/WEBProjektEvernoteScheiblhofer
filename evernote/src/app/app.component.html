@@ -1,6 +1,14 @@
-@if(notelistListOn) {
+<!--@if(notelistListOn) {
   <app-notelist-list (showDetailsEvent)="showNoteListDetails($event)">
   </app-notelist-list>
 } @else if (notelistDetailsOn) {
   <app-note-list [notelist]="notelist" (showNoteListListEvent)="showNoteListList()"></app-note-list>
-}
+}-->
+
+<div class="ui two item tabs menu">
+  <a routerLink="notelists" routerLinkActive="active" class="item">Notizlisten</a>
+  <a routerLink="todos" routerLinkActive="active" class="item">Todos</a>
+</div>
+<div class="ui container">
+  <router-outlet></router-outlet>
+</div>

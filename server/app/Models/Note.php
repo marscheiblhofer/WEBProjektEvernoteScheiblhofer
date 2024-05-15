@@ -24,6 +24,10 @@ class Note extends Model
         return $this->hasMany(Image::class);
     }
 
+    public function todos():HasMany {
+        return $this->hasMany(Todo::class);
+    }
+
     /** * note belongs to many categories (n:m) */
     public function categories() : BelongsToMany {
         return $this->belongsToMany(Category::class, 'note_category')->withTimestamps();

@@ -20,7 +20,7 @@ class NoteController extends Controller
 
     public function findByID(string $id):JsonResponse
     {
-        $notes = Note::where('id', $id)->with(['images', 'categories'])->get()->first();
+        $notes = Note::where('id', $id)->with(['images', 'categories','todos'])->get()->first();
         return $notes!=null ? response()->json($notes, 200) : response()->json(null, 200);
     }
 

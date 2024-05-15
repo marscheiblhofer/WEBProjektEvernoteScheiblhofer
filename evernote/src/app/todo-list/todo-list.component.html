@@ -1,0 +1,7 @@
+<h1>Todos</h1>
+<div class="ui middle aligned selection divided list">
+  @for (todo of todos; track todo) {
+    <input type="checkbox" id="todo_{{todo.id}}" name="todo" [checked]="todo.completed">
+    <label for="todo_{{todo.id}}">{{todo.title}} | {{todo.completed}}</label><br>
+  }
+</div>

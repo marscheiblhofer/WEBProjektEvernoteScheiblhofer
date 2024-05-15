@@ -21,6 +21,7 @@ class TodosTableSeeder extends Seeder
         $todo1->description = 'Im Lionfit Hgb';
         $todo1->due_date = new \DateTime('2024-05-21');
         $todo1->visibility = false;
+        $todo1->completed = false;
         $notelist1 = Notelist::all()->first();
         $todo1->notelist()->associate($notelist1);
         $note1 = Note::all()->first();
@@ -36,6 +37,7 @@ class TodosTableSeeder extends Seeder
         $todo2->description = 'WEB Projekt machen bis Freitag';
         $todo2->due_date = new \DateTime('2024-05-21');
         $todo2->visibility = false;
+        $todo2->completed = false;
         $user2_2 = User::findOrFail(1);
         $todo2->creator()->associate($user2_2);
         $todo2->save();
@@ -44,6 +46,7 @@ class TodosTableSeeder extends Seeder
         $todo3->title = 'Pflanzen spritzen';
         $todo3->due_date = new \DateTime('2024-05-25');
         $todo3->visibility = false;
+        $todo3->completed = true;
         $user3_2 = User::findOrFail(3);
         $todo3->creator()->associate($user3_2);
         $todo3->save();
