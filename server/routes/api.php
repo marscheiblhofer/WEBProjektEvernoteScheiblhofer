@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\NoteListController;
 use App\Http\Controllers\TodoController;
@@ -21,18 +22,24 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/notelists', [NoteListController::class, 'index']);
-Route::get('/notelists/{id}', [NoteListController::class, 'findByID']);
-Route::post('/notelists', [NoteListController::class, 'save']);
-Route::put('/notelists/{id}', [NoteListController::class, 'update']);
-Route::delete('/notelists/{id}', [NoteListController::class, 'delete']);
+Route::post('/auth/login', [AuthController::class, 'login']);
 
-Route::get('/notes', [NoteController::class, 'index']);
-Route::get('/notes/{id}', [NoteController::class, 'findByID']);
-Route::get('/notes/search/{searchTerm}', [NoteController::class, 'findBySearchTerm']);
-Route::post('/notes', [NoteController::class, 'save']);
-Route::put('/notes/{id}', [NoteController::class, 'update']);
-Route::delete('/notes/{id}', [NoteController::class, 'delete']);
+Route::group(['middleware' => ['api', 'auth.jwt', 'auth.admin']], function () {
+    Route::get('/notelists', [NoteListController::class, 'index']);
+    Route::get('/notelists/{id}', [NoteListController::class, 'findByID']);
+    Route::post('/notelists', [NoteListController::class, 'save']);
+    Route::put('/notelists/{id}', [NoteListController::class, 'update']);
+    Route::delete('/notelists/{id}', [NoteListController::class, 'delete']);
 
-Route::get('/todos', [TodoController::class, 'index']);
-Route::get('/todos/{id}', [TodoController::class, 'findByID']);
+    Route::get('/notes', [NoteController::class, 'index']);
+    Route::get('/notes/{id}', [NoteController::class, 'findByID']);
+    Route::get('/notes/search/{searchTerm}', [NoteController::class, 'findBySearchTerm']);
+    Route::post('/notes', [NoteController::class, 'save']);
+    Route::put('/notes/{id}', [NoteController::class, 'update']);
+    Route::delete('/notes/{id}', [NoteController::class, 'delete']);
+
+    Route::get('/todos', [TodoController::class, 'index']);
+    Route::get('/todos/{id}', [TodoController::class, 'findByID']);
+
+    Route::post('auth/logout', [AuthController::class,'logout']);
+});

@@ -17,7 +17,7 @@ class UsersTableSeeder extends Seeder
         $user->firstname = 'Susanne';
         $user->lastname = 'Herberginger';
         $user->email = 'susi@gmx.at';
-        $user->password = 'abcdef123';
+        $user->password = bcrypt('abcdef123');
         $user->picture = 'https://picsum.photos/400/400';
         $user->save();
 

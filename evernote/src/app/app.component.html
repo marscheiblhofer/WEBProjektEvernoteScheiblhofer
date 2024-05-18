@@ -5,10 +5,17 @@
   <app-note-list [notelist]="notelist" (showNoteListListEvent)="showNoteListList()"></app-note-list>
 }-->
 
-<div class="ui two item tabs menu">
-  <a routerLink="notelists" routerLinkActive="nl-active-tab " class="item">Notizlisten</a>
-  <a routerLink="todos" routerLinkActive="nl-active-tab " class="item">Todos</a>
-</div>
+
+@if (isLoggedIn()) {
+  <div class="ui three item tabs menu">
+    <a routerLink="notelists" routerLinkActive="nl-active-tab " class="item">Notizlisten</a>
+    <a routerLink="todos" routerLinkActive="nl-active-tab " class="item">Todos</a>
+    <a routerLink="login" routerLinkActive="active" class="item">{{ getLoginLabel() }}</a>
+  </div>
+}
+
+<!--<a routerLink="login" routerLinkActive="active" class="item">{{ getLoginLabel() }}</a>-->
+
 <div class="ui container">
   <router-outlet></router-outlet>
 </div>
