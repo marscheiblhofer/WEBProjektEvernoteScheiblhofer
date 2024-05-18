@@ -1,7 +1,45 @@
-<h1>Notizliste</h1>
-<form class="ui large form" [formGroup]="notelistForm">
-  <div class="field">
-    <label for="name">Name der Notizliste</label>
-    <input type="text" id="name" formControlName="name">
+<h1>Notizbuch Formular</h1>
+
+<form class="ui large form" [formGroup]="notelistForm" (ngSubmit)="submitNotelistForm()">
+
+  <div class="column">
+    <div class="field">
+      <label for="name">Name</label>
+      <input type="text" id="name" formControlName="name">
+      @if(errors['name']){
+        <div class="ui negative message"> {{ errors['name'] }}</div>
+      }
+    </div>
   </div>
+  <div class="ui segment">
+    <div class="ui two column very relaxed grid">
+      <div class="column">
+        <div class="ui toggle checkbox">
+          <input type="checkbox" name="public" formControlName="visibility" id="visibility">
+          <label class="dn" for="visibility" data-content="OFF">{{ notelistForm.get('visibility')?.value ?
+            'öffentlich' : 'privat' }}</label>
+          </div>
+      </div>
+      @if(notelistForm.get('visibility')?.value){
+      <div class="column">
+        <h3>Teilen mit...</h3>
+            Die Liste ist geteilt. Füge andere Benutzer*innen hinzu:
+            <button class="ui button mini green" (click)="addUser()">
+              add
+            </button>
+        <div *ngFor="let userControl of user.controls; let i = index" [formGroupName]="i">
+          <p>Vorname: {{ userControl.get('firstname')?.value }}</p>
+          <!--<button type="button" (click)="deleteUser(i)">Benutzer entfernen</button>-->
+          <button type="button" (click)="addUser()">Benutzer hinzufügen</button>
+        </div>
+          </div>
+          <div formArrayName="user"></div>
+          }
+      <div class="sixteen wide column">
+    </div>
+    <div class="ui vertical divider"></div>
+
+  </div>
+  </div>
+    <button type="submit" class="ui red button" [disabled]="notelistForm.invalid">Änderungen speichern</button>
 </form>

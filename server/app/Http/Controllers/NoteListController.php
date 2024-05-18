@@ -18,7 +18,7 @@ class NoteListController extends Controller
 
     public function findByID(string $id):JsonResponse
     {
-        $notelist = Notelist::where('id', $id)->with(['creator','notes'])->get()->first();
+        $notelist = Notelist::where('id', $id)->with(['creator','notes', 'user'])->get()->first();
         return $notelist!=null ? response()->json($notelist, 200) : response()->json(null, 200);
     }
 
@@ -28,7 +28,20 @@ class NoteListController extends Controller
         try {
             $notelist = Notelist::create($request->all());
             $notelist->visibility = 0;
-            //TODO: creator_id?
+
+            //TODO: gerade hinzugefügt
+            if($notelist->visibility) { //public notelist
+                $creator_ids = [];
+                if(isset($request['user']) && is_array($request['user'])) {
+                    foreach ($request['user'] as $u) {
+                        array_push($creator_ids, $u['id']);
+                    }
+                }
+                $notelist->user()->sync($creator_ids);
+            } else { //not public notelist
+                $notelist->user()->delete();
+            }
+
             DB::commit();
             return response()->json($notelist, 201);
         } catch (\Exception $e) {

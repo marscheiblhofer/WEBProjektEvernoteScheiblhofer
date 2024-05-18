@@ -1,53 +1,56 @@
-@if (notelist) {
+<!--Styling für Notelist Details Ansicht hier-->
+@if(notelist){
 <div class="ui segment">
   <div class="ui two column very relaxed grid">
     <div class="column">
       <h1>{{notelist.name}}</h1>
-      <!--Creator: {{notelist.creator.firstname}} {{notelist.creator.lastname}}-->
-      <h2>Notizen</h2>
+      <button class="ui tiny red labeled icon button" (click)="removeNotelist()">
+        <i class="remove icon"></i>Notizbuch löschen</button>
+      <a class="ui tiny yellow labeled icon button" [routerLink]="'../../notelist-form/'+ notelist.id">
+        <i class="edit icon"></i>Notizbuch bearbeiten
+      </a>
       <div class="ui middle aligned selection divided list">
         @for (note of notelist.notes; track note) {
           <a class="item" (click)="showNoteDetails(note)">
-            <div class="content">
-              {{note.id}} | {{note.title}}
-            </div>
+            {{note.id}} | {{note.title}}
           </a>
         }
-        <button class="ui red button" [routerLink]="'/notelists'">Zurück zur Übersicht</button>
-        <button class="ui tiny red labeled icon button" (click)="removeNotelist()">
-          <i class="remove icon"></i>Notizbuch löschen</button>
-        <a class="ui tiny yellow labeled icon button" [routerLink]="'../../notelist-form/'+ notelist.id">
-          <i class="edit icon"></i>Notizbuch bearbeiten
-        </a>
+        <button [routerLink]="'/note-form'" [state]="{notelist:notelist.id}" class="ui tiny red labeled icon button" >
+          <i class="add icon"></i>Notiz hinzufügen</button>
       </div>
+
+
     </div>
-
-
-
     <div class="column">
-      @if(noteDetailsOn) {
-        @if (note) {
-          {{note.title}}
-          <div class="sixteen wide column">
-            <div class="ui small images">
-              @for (thumbnail of note.images; track thumbnail) {
-                <img [src]="thumbnail.url">
-              }
-            </div>
-            <h2 *ngIf="note.todos?.length !== 0">Todos</h2>
-            @for (todo of note.todos; track todo) {
-              <input type="checkbox" id="todo_{{todo.id}}" name="todo" [checked]="todo.completed">
-              <label for="todo_{{todo.id}}">{{todo.title}} | {{todo.completed}}</label><br>
+      @if(noteDetailsOn){
+        @if (note){
+          <h1>{{note.title}}</h1>
+          <p>Description: {{note.description}}</p>
+          <div class="ui small images">
+            @for (thumbnail of note.images; track thumbnail) {
+              <img [src]="thumbnail.url">
             }
           </div>
+          <br>
+          @for (todo of note.todos; track todo) {
+            <input type="checkbox" id="todo{{todo.title}}" name="todo" value="Todo" [checked]="todo.completed">
+            <label for="todo{{todo.title}}" class="strikethrough"> {{todo.title}}</label><br>
+          }
           <button class="ui tiny red labeled icon button" (click)="removeNote()">
             <i class="remove icon"></i>Notiz löschen</button>
-        }
-      } @else {
-        Kein Notiz wurde ausgewählt ...
-      }
+          <a class="ui tiny yellow labeled icon button" [routerLink]="'../../note-form/'+ note.id">
+            <i class="edit icon"></i>Notiz bearbeiten
+          </a>
+        } @else {
+
+        }}
     </div>
-  </div>
+    <div class="sixteen wide column">
+
+      </div>
+    </div>
   <div class="ui vertical divider"></div>
+
 </div>
+  <button [routerLink]="'/notelists'" class="ui red button">Zurück zur Liste</button>
 }

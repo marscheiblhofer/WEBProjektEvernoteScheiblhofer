@@ -1,77 +1,64 @@
 import {Component, OnInit} from '@angular/core';
-import {Notelist} from "../shared/notelist";
 import {Note} from "../shared/note";
-import {NotelistEvernoteService} from "../shared/notelist-evernote.service";
-import {NotelistListComponent} from "../notelist-list/notelist-list.component";
+import {Notelist} from "../shared/notelist";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {NotelistFactory} from "../shared/notelist-factory";
 import {ToastrService} from "ngx-toastr";
-import {NgIf} from "@angular/common";
+import {NotelistEvernoteService} from "../shared/notelist-evernote.service";
 
 @Component({
-  selector: 'app-note-list',
+  selector: 'bs-note-list',
   standalone: true,
   imports: [
-    RouterLink,
-    NgIf
+    RouterLink
   ],
   templateUrl: './note-list.component.html',
   styles: ``
 })
-export class NoteListComponent implements OnInit{
-  notelist: Notelist = NotelistFactory.empty();
-  //@Input notelist: Notelist | undefined;
-  //@Output() showNoteListListEvent = new EventEmitter<any>();
-  //notelist:Notelist = BookFactory.empty(); TODO
-  //notelist:Notelist | undefined;
-  //notes:Note[] | undefined;
-  constructor(private service:NotelistEvernoteService,
+export class NoteListComponent implements OnInit {
+  notelist:Notelist = NotelistFactory.empty();
+
+  constructor(private evernoteService:NotelistEvernoteService,
               private route:ActivatedRoute,
               private router:Router,
-              private toastr: ToastrService) {
+              private toastr:ToastrService) {
   }
-  ngOnInit(){
+
+  ngOnInit() {
     const params = this.route.snapshot.params;
-    //this.notelist = this.service.getSingleNotelist(params['id'])
-      this.service.getSingleNotelist((params['id']).toString())
-        .subscribe((nl:Notelist)=>this.notelist = nl);
-    this.note = undefined;
+    this.evernoteService.getSingleNotelist((params['id']).toString())
+      .subscribe((notelist:Notelist)=>this.notelist = notelist);
   }
 
-  //showNoteListList() {
-    //this.showNoteListListEvent.emit();
-  //}
-
-  noteDetailsOn:boolean = false;
+  noteDetailsOn:boolean= false;
   note:Note|undefined;
 
   showNoteDetails(note: Note) {
     this.noteDetailsOn = true;
-    this.service.getSingleNote((note.id).toString())
-      .subscribe((n:Note)=>this.note = n);
-    console.log(this.note);
+    this.evernoteService.getSingleNote((note.id).toString())
+      .subscribe((note:Note)=>this.note = note);
   }
 
   removeNotelist() {
-    if(confirm("Notizbuch wirklich löschen?")) {
-      this.service.removeNotelist(this.notelist.id).subscribe(
-        () => {
-          this.router.navigate(['../'], {relativeTo: this.route});
-          this.toastr.success('Notizbuch gelöscht','Evernote');
+    if(confirm("Notizbuch wirklich löschen?")){
+      this.evernoteService.removeNotelist(this.notelist.id).subscribe(
+        ()=> {this.router.navigate(['/..'], {relativeTo: this.route});
+          this.toastr.success('Notizbuch gelöscht!', "Evernote");
         }
-      )
+      );
     }
   }
 
-  removeNote() {
-    if(this.note)
-    if(confirm("Notizbuch wirklich löschen?")) {
-      this.service.removeNote(this.note?.id).subscribe(
-        () => {
-          this.ngOnInit();
-          this.toastr.success('Notiz gelöscht','Evernote');
-        }
-      )
+  removeNote(){
+    if(this.note) {
+      if(confirm("Notiz wirklich löschen?")) {
+        this.evernoteService.removeNote(this.note?.id).subscribe(
+          () => {
+            this.ngOnInit(); this.note = undefined;
+            this.toastr.success('Notiz gelöscht!', "Evernote");
+          }
+        );
+      }
     }
   }
 }

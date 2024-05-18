@@ -51,6 +51,15 @@ export class NotelistEvernoteService {
       .pipe(retry(3)).pipe(catchError(this.errorHandler))
   }
 
+  createNote(note:Note):Observable<any> {
+    return this.http.post<Note>(`${this.api}/notes`, note)
+      .pipe(retry(3)).pipe(catchError(this.errorHandler))
+  }
+  updateNote(note:Note):Observable<any> {
+    return this.http.put<Note>(`${this.api}/notes/${note.id}`, note)
+      .pipe(retry(3)).pipe(catchError(this.errorHandler))
+  }
+
   //Todos
 
   getAllTodos() {

@@ -1,1 +1,22 @@
-<p>note-form works!</p>
+<h1>Notiz Formular</h1>
+
+<form class="ui large form" [formGroup]="noteForm" (ngSubmit)="submitNoteForm()">
+  <div class="field">
+    <label for="title">Name</label>
+    <input type="text" id="title" formControlName="title">
+    @if(errors['title']){
+      <div class="ui negative message"> {{ errors['title'] }}</div>
+    }
+  </div>
+  <div class="field">
+    <label for="description">Description</label>
+    <input type="text" id="description" formControlName="description">
+  </div>
+
+  <div class="field" [formGroup]="categoryForm">
+    <label for="category">Category</label>
+    <input type="text" id="category" formControlName="category">
+    <button class="ui green button" (click)="addCategory()">Category anlegen</button>
+  </div>
+  <button type="submit" class="ui red button">Notiz hinzufügen</button>
+</form>
