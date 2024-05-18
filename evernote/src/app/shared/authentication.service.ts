@@ -28,7 +28,6 @@ export class AuthenticationService {
   isLoggedIn() {
     if(sessionStorage.getItem("token")) {
       let token: string = <string>sessionStorage.getItem("token");
-      console.log(jwtDecode(token));
       const decodedToken = jwtDecode(token) as Token;
       let expirationDate: Date = new Date(0);
       expirationDate.setUTCSeconds(decodedToken.exp);

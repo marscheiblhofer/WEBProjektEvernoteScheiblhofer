@@ -31,5 +31,6 @@
 @if(isLoggedIn()){
   <div>
     <button type="button" class="ui button" (click)="logout()">Logout</button>
+    <p>{{getUserId()}}</p>
   </div>
 }

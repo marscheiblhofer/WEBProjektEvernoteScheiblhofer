@@ -39,7 +39,6 @@ export class NotelistFormComponent implements OnInit{
   ngOnInit() {
     const Id = this.route.snapshot.params['id'];
     this.notelistId=Id;
-    console.log(Id);
     if(Id) {
       this.isUpdatingNotelist = true;
       this.service.getSingleNotelist(Id).subscribe((nl: Notelist) => {
@@ -56,11 +55,9 @@ export class NotelistFormComponent implements OnInit{
       id: [this.notelist.id],
       name: [this.notelist.name, Validators.required],
       visibility: [this.notelist.visibility, Validators.required],
-      creator_id: [this.notelist.creator_id, Validators.required],
+      creator_id: [this.isUpdatingNotelist ? this.notelist.creator_id : sessionStorage.getItem('userId'), Validators.required],
       user: this.fb.array([]),
       notes: this.fb.array([])
-      //-------------------------------------------------
-
     });
 
     this.notelistForm.statusChanges.subscribe(()=>this.updateErrorMessages());
@@ -112,7 +109,6 @@ export class NotelistFormComponent implements OnInit{
         this.router.navigate([`../../notelists`],{relativeTo:this.route});
       });
     } else{
-      notelist.creator_id = 1;
       this.service.createNotelist(notelist).subscribe(()=>{
         this.notelist = NotelistFactory.empty();
         this.notelistForm.reset(NotelistFactory.empty());

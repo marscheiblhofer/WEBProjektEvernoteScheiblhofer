@@ -12,7 +12,12 @@ class NoteListController extends Controller
 {
     public function index():JsonResponse
     {
-        $notelists = Notelist::with(['creator', 'notes'])->get();
+        $notelists = Notelist::with(['creator'])
+            ->where('creator_id',auth()->id())
+            ->orWhereHas('user', function ($query) {
+                $query->where('id',auth()->id());
+            })
+            ->get();
         return response()->json($notelists, 200);
     }
 
@@ -29,7 +34,6 @@ class NoteListController extends Controller
             $notelist = Notelist::create($request->all());
             $notelist->visibility = 0;
 
-            //TODO: gerade hinzugefügt
             if($notelist->visibility) { //public notelist
                 $creator_ids = [];
                 if(isset($request['user']) && is_array($request['user'])) {

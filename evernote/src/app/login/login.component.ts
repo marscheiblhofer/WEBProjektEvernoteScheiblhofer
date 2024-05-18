@@ -19,6 +19,7 @@ interface Response {
 export class LoginComponent implements OnInit{
 
   loginForm: FormGroup;
+  userId: string | undefined | null = null;
 
   constructor (
     private fb: FormBuilder,
@@ -33,6 +34,9 @@ export class LoginComponent implements OnInit{
       username: ["", [Validators.required, Validators.email]],
       password: ["", [Validators.required]]
     })
+    if(this.isLoggedIn()) {
+      this.userId = sessionStorage.getItem('userId')
+    }
   }
 
   login() {
@@ -44,6 +48,7 @@ export class LoginComponent implements OnInit{
         this.router.navigateByUrl("/");
       })
     }
+
   }
 
   isLoggedIn() {
@@ -52,5 +57,9 @@ export class LoginComponent implements OnInit{
 
   logout() {
     this.authService.logout();
+  }
+
+  getUserId() {
+    return this.userId;
   }
 }
