@@ -4,7 +4,7 @@
   <div class="field">
     <label for="title">Name</label>
     <input type="text" id="title" formControlName="title">
-    @if(errors['title']){
+    @if (errors['title']) {
       <div class="ui negative message"> {{ errors['title'] }}</div>
     }
   </div>
@@ -13,10 +13,35 @@
     <input type="text" id="description" formControlName="description">
   </div>
 
-  <div class="field" [formGroup]="categoryForm">
+  <div class="field">
+    <label>Bilder</label>
+    <div formArrayName="images">
+      @for (control of images.controls; let i = $index, l = $last; track control) {
+        <div class="fields" [formGroupName]="i">
+          <input type="hidden" formControlName="id">
+          <div class="nine wide field">
+            <input formControlName="url" placeholder="http://bild{{i+1}}_url">
+          </div>
+          <div class="six wide field">
+            <input formControlName="title" placeholder="Bild{{i+1}}_Titel">
+          </div>
+          @if (l) {
+            <div class="one wide field">
+              <button (click)="addThumbnailControl()" class="ui large button" type="button">+</button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+    @if (errors['images']) {
+      <div class="ui negative message">{{ errors['images'] }}</div>
+    }
+  </div>
+
+  <!--<div class="field" [formGroup]="categoryForm">
     <label for="category">Category</label>
     <input type="text" id="category" formControlName="category">
     <button class="ui green button" (click)="addCategory()">Category anlegen</button>
-  </div>
+  </div>-->
   <button type="submit" class="ui red button">Notiz hinzufügen</button>
 </form>

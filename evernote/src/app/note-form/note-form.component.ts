@@ -1,5 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from "@angular/forms";
 import {NotelistFactory} from "../shared/notelist-factory";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {NoteFactory} from "../shared/note-factory";
@@ -27,7 +35,8 @@ export class NoteFormComponent implements OnInit{
   errors:{[key:string]:string} = {};
   noteId: number|undefined;
   notelist_id: number|undefined;
-  categoryForm: FormGroup;
+  //categoryForm: FormGroup;
+  images: FormArray;
 
   constructor(
     private fb: FormBuilder,
@@ -36,9 +45,9 @@ export class NoteFormComponent implements OnInit{
     private router: Router
   ) {
     this.noteForm = this.fb.group({});
-    this.categoryForm = this.fb.group({});
+    this.images = this.fb.array([]);
+    //this.categoryForm = this.fb.group({});
     const navigation = router.getCurrentNavigation();
-    console.log(navigation?.extras.state);
     if(navigation && navigation.extras.state){
       this.notelist_id = navigation?.extras.state['notelist'];
     }
@@ -61,19 +70,46 @@ export class NoteFormComponent implements OnInit{
   }
 
   initNote(){
+    this.buildThumbnailsArray();
     this.noteForm = this.fb.group({
       id: [this.note.id],
       title: [this.note.title, Validators.required],
       description: [this.note.description],
       notelist_id: [this.note.notelist_id, Validators.required],
-      categories: this.fb.array([])
+      //categories: this.fb.array([])
+      images: this.images
     });
 
     this.noteForm.statusChanges.subscribe(()=>this.updateErrorMessages());
+  }
 
+  buildThumbnailsArray() {
+    if (this.note.images) {
+      this.images = this.fb.array([]);
+
+      for (let img of this.note.images) {
+        let fg = this.fb.group({
+          id: new FormControl(img.id),
+          url: new FormControl(img.url, [Validators.required]),
+          title: new FormControl(img.title, [Validators.required])
+        });
+        this.images.push(fg);
+      }
+      if (this.note.images.length == 0)
+        this.addThumbnailControl();
+    }
+  }
+
+  addThumbnailControl() {
+    this.images.push(this.fb.group({ id: 0, url: null, title: null }));
   }
 
   submitNoteForm(){
+
+    this.noteForm.value.images = this.noteForm.value.images.filter(
+      (thumbnail: { url:string; }) => thumbnail.url
+    );
+
     const note : Note = NoteFactory.fromObject(this.noteForm.value);
     console.log(note);
     if(this.isUpdatingNote){
@@ -105,7 +141,7 @@ export class NoteFormComponent implements OnInit{
     }
   }
 
-  createCategory(category?:any){
+  /*createCategory(category?:any){
     return this.fb.group({
       category:[category, Validators.required]
       }
@@ -114,7 +150,7 @@ export class NoteFormComponent implements OnInit{
 
   addCategory() {
 
-  }
+  }*/
 
   /*submitCategoryForm() {
     this.everservice.createCategory(category).subscribe(()=>{

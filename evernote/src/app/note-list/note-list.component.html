@@ -11,7 +11,7 @@
       </a>
       <div class="ui middle aligned selection divided list">
         @for (note of notelist.notes; track note) {
-          <a class="item" (click)="showNoteDetails(note)">
+          <a class="item" (click)="showNoteDetails(note.id)">
             {{note.id}} | {{note.title}}
           </a>
         }
@@ -34,8 +34,13 @@
           <br>
           <h2>Todos</h2>
           @for (todo of note.todos; track todo) {
-            <input type="checkbox" id="todo{{todo.title}}" name="todo" value="Todo" [checked]="todo.completed">
+            <input type="checkbox" id="todo{{todo.title}}" name="todo" [checked]="todo.completed">
             <label for="todo{{todo.title}}" class="strikethrough"> {{todo.title}}</label><br>
+          }
+          @for (category of note.categories; track category) {
+            <div class="ui tag label">
+              {{category.category}}
+            </div>
           }
 
           <form class="ui medium form" [formGroup]="todoForm" (ngSubmit)="submitTodoForm()">

@@ -46,9 +46,9 @@ export class NoteListComponent implements OnInit {
     this.initTodo();
   }
 
-  showNoteDetails(note: Note) {
+  showNoteDetails(noteId: number) {
     this.noteDetailsOn = true;
-    this.service.getSingleNote((note.id).toString())
+    this.service.getSingleNote((noteId).toString())
       .subscribe((note: Note) => this.note = note);
   }
 
@@ -102,5 +102,7 @@ export class NoteListComponent implements OnInit {
       this.todo = TodoFactory.empty();
       this.todoForm.reset(TodoFactory.empty());
     });
+    if(this.note?.id)
+      this.showNoteDetails(this.note?.id);
   }
 }
