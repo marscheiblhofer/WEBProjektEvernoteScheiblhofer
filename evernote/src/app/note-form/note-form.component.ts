@@ -31,7 +31,7 @@ export class NoteFormComponent implements OnInit{
 
   constructor(
     private fb: FormBuilder,
-    private everservice: NotelistEvernoteService,
+    private service: NotelistEvernoteService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -52,7 +52,7 @@ export class NoteFormComponent implements OnInit{
     }
     if(Id){ // wir fügen eine Notiz hinzu
       this.isUpdatingNote = true;
-      this.everservice.getSingleNote(Id).subscribe(note =>{
+      this.service.getSingleNote(Id).subscribe(note =>{
         this.note = note;
         this.initNote();
       });
@@ -77,7 +77,7 @@ export class NoteFormComponent implements OnInit{
     const note : Note = NoteFactory.fromObject(this.noteForm.value);
     console.log(note);
     if(this.isUpdatingNote){
-      this.everservice.updateNote(note).subscribe(()=> {
+      this.service.updateNote(note).subscribe(()=> {
         this.router.navigate([`../../notelists/${note.notelist_id}`],{relativeTo:this.route});
       });
     }else{
@@ -85,7 +85,7 @@ export class NoteFormComponent implements OnInit{
         note.notelist_id = this.notelist_id;
       }
       console.log(note);
-      this.everservice.createNote(note).subscribe(()=>{
+      this.service.createNote(note).subscribe(()=>{
         this.note = NoteFactory.empty();
         this.noteForm.reset(NoteFactory.empty());
         this.router.navigate([`../notelists/${note.notelist_id}`],{relativeTo:this.route});

@@ -28,8 +28,7 @@ export class NoteListComponent implements OnInit {
   errors: { [key: string]: string } = {};
 
 
-  constructor(private evernoteService: NotelistEvernoteService,
-              private route: ActivatedRoute,
+  constructor(private route: ActivatedRoute,
               private router: Router,
               private toastr: ToastrService,
               private fb: FormBuilder,
@@ -39,7 +38,7 @@ export class NoteListComponent implements OnInit {
 
   ngOnInit() {
     const params = this.route.snapshot.params;
-    this.evernoteService.getSingleNotelist((params['id']).toString())
+    this.service.getSingleNotelist((params['id']).toString())
       .subscribe((notelist: Notelist) => {
         this.notelist = notelist;
         this.initTodo();
@@ -49,13 +48,13 @@ export class NoteListComponent implements OnInit {
 
   showNoteDetails(note: Note) {
     this.noteDetailsOn = true;
-    this.evernoteService.getSingleNote((note.id).toString())
+    this.service.getSingleNote((note.id).toString())
       .subscribe((note: Note) => this.note = note);
   }
 
   removeNotelist() {
     if (confirm("Notizbuch wirklich löschen?")) {
-      this.evernoteService.removeNotelist(this.notelist.id).subscribe(
+      this.service.removeNotelist(this.notelist.id).subscribe(
         () => {
           this.router.navigate(['/..'], {relativeTo: this.route});
           this.toastr.success('Notizbuch gelöscht!', "Evernote");
@@ -67,7 +66,7 @@ export class NoteListComponent implements OnInit {
   removeNote() {
     if (this.note) {
       if (confirm("Notiz wirklich löschen?")) {
-        this.evernoteService.removeNote(this.note?.id).subscribe(
+        this.service.removeNote(this.note?.id).subscribe(
           () => {
             this.ngOnInit();
             this.note = undefined;

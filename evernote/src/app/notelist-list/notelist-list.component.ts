@@ -17,10 +17,10 @@ import {NotelistEvernoteService} from "../shared/notelist-evernote.service";
 export class NotelistListComponent implements OnInit{
   notelists: Notelist[] = [];
 
-  constructor(private evernoteService: NotelistEvernoteService) {
+  constructor(private service: NotelistEvernoteService) {
   }
   ngOnInit(): void {
-    this.evernoteService.getAllNotelists().subscribe(res => this.notelists = res);
+    this.service.getAllNotelists().subscribe(res => this.notelists = res);
   }
 
 }
