@@ -50,7 +50,6 @@ export class NotelistFormComponent implements OnInit{
   }
 
   initNoteList() {
-    console.log('notelist-form', this.notelist)
     this.notelistForm = this.fb.group({
       id: [this.notelist.id],
       name: [this.notelist.name, Validators.required],

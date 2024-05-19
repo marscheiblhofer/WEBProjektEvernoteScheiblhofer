@@ -25,17 +25,33 @@
       @if(noteDetailsOn){
         @if (note){
           <h1>{{note.title}}</h1>
-          <p>Description: {{note.description}}</p>
+          <p>{{note.description}}</p>
           <div class="ui small images">
             @for (thumbnail of note.images; track thumbnail) {
               <img [src]="thumbnail.url">
             }
           </div>
           <br>
+          <h2>Todos</h2>
           @for (todo of note.todos; track todo) {
             <input type="checkbox" id="todo{{todo.title}}" name="todo" value="Todo" [checked]="todo.completed">
             <label for="todo{{todo.title}}" class="strikethrough"> {{todo.title}}</label><br>
           }
+
+          <form class="ui medium form" [formGroup]="todoForm" (ngSubmit)="submitTodoForm()">
+            <div class="column">
+              <div class="field">
+                <label for="title">Titel</label>
+                <input type="text" id="title" formControlName="title">
+                @if(errors['title']){
+                  <div class="ui negative message"> {{ errors['title'] }}</div>
+                }
+              </div>
+            </div>
+            <button type="submit" class="ui red button" [disabled]="todoForm.invalid">Todo erstellen</button>
+          </form>
+
+
           <button class="ui tiny red labeled icon button" (click)="removeNote()">
             <i class="remove icon"></i>Notiz löschen</button>
           <a class="ui tiny yellow labeled icon button" [routerLink]="'../../note-form/'+ note.id">

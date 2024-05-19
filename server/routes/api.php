@@ -40,6 +40,8 @@ Route::group(['middleware' => ['api', 'auth.jwt', 'auth.admin']], function () {
 
     Route::get('/todos', [TodoController::class, 'index']);
     Route::get('/todos/{id}', [TodoController::class, 'findByID']);
+    Route::post('/todos', [TodoController::class, 'save']);
+    Route::put('/todos/{id}', [TodoController::class, 'update']);
 
     Route::post('auth/logout', [AuthController::class,'logout']);
 });

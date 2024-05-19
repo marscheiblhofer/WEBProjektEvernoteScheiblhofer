@@ -11,7 +11,6 @@ import {Todo} from "./todo";
 export class NotelistEvernoteService {
 
   private api = 'http://evernote.s2110456027.student.kwmhgb.at/api';
-  //notelists: Notelist[] = [];
 
   constructor(private http:HttpClient) { }
 
@@ -64,6 +63,10 @@ export class NotelistEvernoteService {
 
   getAllTodos() {
     return this.http.get<Array<Todo>>(`${this.api}/todos`)
+      .pipe(retry(3)).pipe(catchError(this.errorHandler))
+  }
+  createTodo(todo:Todo):Observable<any> {
+    return this.http.post<Todo>(`${this.api}/todos`, todo)
       .pipe(retry(3)).pipe(catchError(this.errorHandler))
   }
 

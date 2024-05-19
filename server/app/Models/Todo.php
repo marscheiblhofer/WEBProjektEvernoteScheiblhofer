@@ -11,7 +11,7 @@ class Todo extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'description', 'due_date', 'visibility', 'completed'
+        'title', 'description', 'due_date', 'visibility', 'completed', 'notelist_id', 'note_id', 'responsible_person_id', 'creator_id'
     ];
 
     public function notelist():BelongsTo {
