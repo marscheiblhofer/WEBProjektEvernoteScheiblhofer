@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\NoteListController;
 use App\Http\Controllers\TodoController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,8 @@ Route::group(['middleware' => ['api', 'auth.jwt', 'auth.admin']], function () {
     Route::get('/todos/{id}', [TodoController::class, 'findByID']);
     Route::post('/todos', [TodoController::class, 'save']);
     Route::put('/todos/{id}', [TodoController::class, 'update']);
+
+    Route::get('/user/search/{searchTerm}', [UserController::class, 'findEmailBySearchTerm']);
 
     Route::post('auth/logout', [AuthController::class,'logout']);
 });

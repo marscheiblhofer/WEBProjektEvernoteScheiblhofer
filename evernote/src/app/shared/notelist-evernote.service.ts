@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {catchError, Observable, retry, throwError} from "rxjs";
 import {Note} from "./note";
 import {Todo} from "./todo";
+import {User} from "./user";
 
 @Injectable({
   providedIn: 'root'
@@ -68,6 +69,11 @@ export class NotelistEvernoteService {
   createTodo(todo:Todo):Observable<any> {
     return this.http.post<Todo>(`${this.api}/todos`, todo)
       .pipe(retry(3)).pipe(catchError(this.errorHandler))
+  }
+
+  getUserEmail(searchTerm: string): Observable<Array<User>> {
+    return this.http.get<User>(`${this.api}/user/search/${searchTerm}`)
+      .pipe(retry(3)).pipe(catchError(this.errorHandler));
   }
 
   private errorHandler(error:Error|any) :Observable<any>{

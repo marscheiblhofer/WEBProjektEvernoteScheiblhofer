@@ -32,11 +32,12 @@
             }
           </div>
           <br>
-          <h2>Todos</h2>
+          <h2 *ngIf="note.todos">Todos</h2>
           @for (todo of note.todos; track todo) {
             <input type="checkbox" id="todo{{todo.title}}" name="todo" [checked]="todo.completed">
             <label for="todo{{todo.title}}" class="strikethrough"> {{todo.title}}</label><br>
           }
+
           @for (category of note.categories; track category) {
             <div class="ui tag label">
               {{category.category}}

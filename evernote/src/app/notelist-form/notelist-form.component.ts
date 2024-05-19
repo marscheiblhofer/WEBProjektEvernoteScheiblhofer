@@ -2,20 +2,20 @@ import {Component, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NotelistFactory} from "../shared/notelist-factory";
 import {ActivatedRoute, Router} from "@angular/router";
-import {User} from "../shared/user";
 import {NgForOf} from "@angular/common";
-import {ErrorMessage, NotelistFormErrorMessages} from "./notelist-form-error-messages";
+import {NotelistFormErrorMessages} from "./notelist-form-error-messages";
 import {Notelist} from "../shared/notelist";
-import {Note} from "../shared/note";
-import {NoteFactory} from "../shared/note-factory";
 import {NotelistEvernoteService} from "../shared/notelist-evernote.service";
+import {ShareToUserComponent} from "../share-to-user/share-to-user.component";
+import {User} from "../shared/user";
 
 @Component({
   selector: 'bs-notelist-form',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    NgForOf
+    NgForOf,
+    ShareToUserComponent
   ],
   templateUrl: './notelist-form.component.html',
   styles: ``
@@ -125,6 +125,10 @@ export class NotelistFormComponent implements OnInit{
         this.errors[message.forControl] = message.text;
       }
     }
+  }
+
+  userSelected(user:User) {
+    console.log('selecteduser',user);
   }
 }
 

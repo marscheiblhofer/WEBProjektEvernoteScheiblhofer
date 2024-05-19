@@ -4,4 +4,7 @@
     <input type="checkbox" id="todo_{{todo.id}}" name="todo" [checked]="todo.completed">
     <label for="todo_{{todo.id}}">{{todo.title}} | {{todo.completed}}</label><br>
   }
+  <a class="ui tiny yellow labeled icon button" [routerLink]="'../todo-form/'">
+    <i class="edit icon"></i>Todo erstellen
+  </a>
 </div>

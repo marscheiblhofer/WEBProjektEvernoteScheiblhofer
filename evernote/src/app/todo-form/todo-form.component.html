@@ -1,0 +1,37 @@
+<h2>Todo anlegen</h2>
+<form class="ui medium form" [formGroup]="todoForm" (ngSubmit)="submitTodoForm()">
+  <div class="column">
+    <div class="field">
+      <label for="title">Titel</label>
+      <input type="text" id="title" formControlName="title">
+      @if(errors['title']){
+        <div class="ui negative message"> {{ errors['title'] }}</div>
+      }
+    </div>
+    <div class="field">
+      <label for="description">Titel</label>
+      <input type="text" id="description" formControlName="description">
+      @if(errors['description']){
+        <div class="ui negative message"> {{ errors['description'] }}</div>
+      }
+    </div>
+
+    <div class="field">
+      <label for="due_date">Fällig bis</label>
+      <input type="date" id="due_date" formControlName="due_date">
+      @if(errors['due_date']){
+        <div class="ui negative message">{{ errors['due_date'] }} </div>
+      }
+    </div>
+    <!--TODO:visibility-->
+    <div class="ui toggle checkbox">
+      <input type="checkbox" name="public" formControlName="visibility" id="visibility">
+      <label class="dn" for="visibility" data-content="OFF">{{
+          todoForm.get('visibility')?.value ?
+            'öffentlich' : 'privat'
+        }}</label>
+    </div>
+
+  </div>
+  <button type="submit" class="ui red button" [disabled]="todoForm.invalid">Todo erstellen</button>
+</form>

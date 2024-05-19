@@ -8,13 +8,15 @@ import {NotelistEvernoteService} from "../shared/notelist-evernote.service";
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {TodoFactory} from "../shared/todo-factory";
 import {Todo} from "../shared/todo";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'bs-note-list',
   standalone: true,
   imports: [
     RouterLink,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgIf
   ],
   templateUrl: './note-list.component.html',
   styles: ``
