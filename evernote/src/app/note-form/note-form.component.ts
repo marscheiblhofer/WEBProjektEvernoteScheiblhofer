@@ -35,8 +35,8 @@ export class NoteFormComponent implements OnInit{
   errors:{[key:string]:string} = {};
   noteId: number|undefined;
   notelist_id: number|undefined;
-  //categoryForm: FormGroup;
   images: FormArray;
+  categories: FormArray;
 
   constructor(
     private fb: FormBuilder,
@@ -46,6 +46,7 @@ export class NoteFormComponent implements OnInit{
   ) {
     this.noteForm = this.fb.group({});
     this.images = this.fb.array([]);
+    this.categories = this.fb.array([]);
     //this.categoryForm = this.fb.group({});
     const navigation = router.getCurrentNavigation();
     if(navigation && navigation.extras.state){
@@ -55,11 +56,8 @@ export class NoteFormComponent implements OnInit{
 
   ngOnInit() {
     const Id = this.route.snapshot.params['id'];
-    console.log(this.route.snapshot.params);
     if(Id){
       this.noteId=Id;
-    }
-    if(Id){ // wir fügen eine Notiz hinzu
       this.isUpdatingNote = true;
       this.service.getSingleNote(Id).subscribe(note =>{
         this.note = note;
@@ -71,13 +69,14 @@ export class NoteFormComponent implements OnInit{
 
   initNote(){
     this.buildThumbnailsArray();
+    this.buildCategoriesArray();
     this.noteForm = this.fb.group({
       id: [this.note.id],
       title: [this.note.title, Validators.required],
       description: [this.note.description],
       notelist_id: [this.note.notelist_id, Validators.required],
-      //categories: this.fb.array([])
-      images: this.images
+      images: this.images,
+      categories: this.categories
     });
 
     this.noteForm.statusChanges.subscribe(()=>this.updateErrorMessages());
@@ -103,6 +102,27 @@ export class NoteFormComponent implements OnInit{
   addThumbnailControl() {
     this.images.push(this.fb.group({ id: 0, url: null, title: null }));
   }
+
+  buildCategoriesArray() {
+    if (this.note.categories) {
+      this.categories = this.fb.array([]);
+      for (let category of this.note.categories) {
+        let fg = this.fb.group({
+          id: new FormControl(category.id),
+          category: new FormControl(category.category, [Validators.required])
+        });
+        this.categories.push(fg);
+      }
+      if (this.note.categories.length == 0)
+        this.addCategoriesControl();
+    }
+  }
+
+  addCategoriesControl() {
+    this.categories.push(this.fb.group({ id: 0, category: null }));
+  }
+
+
 
   submitNoteForm(){
 
@@ -140,24 +160,5 @@ export class NoteFormComponent implements OnInit{
       }
     }
   }
-
-  /*createCategory(category?:any){
-    return this.fb.group({
-      category:[category, Validators.required]
-      }
-    )
-  }
-
-  addCategory() {
-
-  }*/
-
-  /*submitCategoryForm() {
-    this.everservice.createCategory(category).subscribe(()=>{
-      this.category = CategoryFactory.empty();
-      this.categoryForm.reset(CategoryFactory.empty());
-      this.router.navigate([`../notelists/${note.notelist_id}`],{relativeTo:this.route});
-    });
-  }*/
 }
 

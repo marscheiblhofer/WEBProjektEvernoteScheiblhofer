@@ -38,10 +38,27 @@
     }
   </div>
 
-  <!--<div class="field" [formGroup]="categoryForm">
-    <label for="category">Category</label>
-    <input type="text" id="category" formControlName="category">
-    <button class="ui green button" (click)="addCategory()">Category anlegen</button>
-  </div>-->
+  <div class="field">
+    <label>Kategorie</label>
+    <div formArrayName="categories">
+      @for (control of categories.controls; let i = $index, l = $last; track control) {
+        <div class="fields" [formGroupName]="i">
+          <input type="hidden" formControlName="id">
+          <div class="six wide field">
+            <input formControlName="category" placeholder="Rezept">
+          </div>
+          @if (l) {
+            <div class="one wide field">
+              <button (click)="addCategoriesControl()" class="ui large button" type="button">+</button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+    @if (errors['categories']) {
+      <div class="ui negative message">{{ errors['categories'] }}</div>
+    }
+  </div>
+
   <button type="submit" class="ui red button">Notiz hinzufügen</button>
 </form>

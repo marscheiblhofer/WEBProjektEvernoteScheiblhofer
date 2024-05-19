@@ -78,13 +78,13 @@ class NoteController extends Controller
                         $note->images()->save($image);
                     }
                 }
-                $ids = [];
+                $note->categories()->delete();
                 if(isset($request['categories']) && is_array($request['categories'])) {
                     foreach ($request['categories'] as $cat) {
-                        array_push($ids, $cat['id']);
+                        $category = Category::firstOrNew(['category'=>$cat['category']]);
+                        $note->categories()->save($category);
                     }
                 }
-                $note->categories()->sync($ids);
                 $note->save();
             }
 
