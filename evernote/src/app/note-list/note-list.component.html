@@ -56,9 +56,10 @@
                   </div>
                 </div>
                 <div class="extra content">
-                  <div class="ui two buttons">
+                  <div class="ui three buttons">
                     <div *ngIf="!todo.completed" (click)="todoMarkAsChecked(todo, note.id)" class="ui basic green button">Auf erledigt setzen</div>
                     <div (click)="todoDelete(todo.id, note.id)" class="ui basic red button">Löschen</div>
+                    <div [routerLink]="'../../todo-form/'+todo.id" class="ui basic yellow button">Bearbeiten</div>
                   </div>
                 </div>
               </div>

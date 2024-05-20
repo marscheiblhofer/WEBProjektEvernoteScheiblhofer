@@ -66,6 +66,12 @@ export class NotelistEvernoteService {
     return this.http.get<Array<Todo>>(`${this.api}/todos`)
       .pipe(retry(3)).pipe(catchError(this.errorHandler))
   }
+
+  getSingleTodo(id:string):Observable<Todo>{
+    return this.http.get<Todo>(`${this.api}/todos/${id}`)
+      .pipe(retry(3)).pipe(catchError(this.errorHandler))
+  }
+
   createTodo(todo:Todo):Observable<any> {
     return this.http.post<Todo>(`${this.api}/todos`, todo)
       .pipe(retry(3)).pipe(catchError(this.errorHandler))

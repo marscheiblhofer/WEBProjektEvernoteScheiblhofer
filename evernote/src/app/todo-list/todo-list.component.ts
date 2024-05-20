@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {Notelist} from "../shared/notelist";
 import {NotelistEvernoteService} from "../shared/notelist-evernote.service";
-import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {Todo} from "../shared/todo";
 import {NgIf} from "@angular/common";
 import {TodoFactory} from "../shared/todo-factory";
@@ -20,7 +20,9 @@ import {ToastrService} from "ngx-toastr";
 export class TodoListComponent {
   todos: Todo[] = [];
   constructor(private service: NotelistEvernoteService,
-              private toastr: ToastrService) {
+              private toastr: ToastrService,
+              private route: ActivatedRoute,
+              private router: Router,) {
   }
   ngOnInit(): void {
     this.service.getAllTodos().subscribe(res => this.todos = res);
@@ -40,5 +42,9 @@ export class TodoListComponent {
         this.toastr.success("Todo wurde gelöscht!")
       });
     }
+  }
+
+  todoUpdate(id: number) {
+    this.router.navigate(['/..'], {relativeTo: this.route});
   }
 }
