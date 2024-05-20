@@ -7,6 +7,7 @@ export class Notelist {
               public visibility:boolean,
               public creator_id: number,
               public created_at?:any,
+              public updated_at?:any,
               //public creator: User,
               public notes?:Note[],
               public user?: User[],

@@ -7,9 +7,10 @@
 
 
 @if (isLoggedIn()) {
-  <div class="ui three item tabs menu">
+  <div class="ui four item tabs menu">
     <a routerLink="notelists" routerLinkActive="nl-active-tab " class="item">Notizlisten</a>
     <a routerLink="todos" routerLinkActive="nl-active-tab " class="item">Todos</a>
+    <a routerLink="categories" routerLinkActive="nl-active-tab " class="item">Kategorie suchen</a>
     <a routerLink="login" routerLinkActive="active" class="item">{{ getLoginLabel() }}</a>
   </div>
 }

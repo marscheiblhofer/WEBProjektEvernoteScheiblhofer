@@ -2,7 +2,7 @@
 <div class="ui middle aligned selection divided list">
   @for (notelist of notelists; track notelist) {
     <a class="item" [routerLink]="notelist.id.toString()">
-      {{notelist.name}}|{{notelist.created_at}}
+      {{notelist.name}} (Erstellt am: {{notelist.created_at}}, zuletzt geändert am: {{notelist.updated_at}})
     </a>
   }<button [routerLink]="'/notelist-form'" class="ui red button">Notizbuch hinzufügen</button>
 </div>

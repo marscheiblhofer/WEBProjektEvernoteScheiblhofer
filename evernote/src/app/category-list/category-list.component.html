@@ -1,0 +1,11 @@
+<app-category-search (categorySelected)="categorySelected($event)"></app-category-search>
+<br><br><br><br>
+@if (category) {
+  <h1>Kategorie: {{ category.category }}</h1>
+  @for (note of notes; track note) {
+    <div class="ui raised very padded text container segment">
+      <p class="ui header">{{ note.title }}</p>
+      <p>{{note.description}}</p>
+    </div>
+  }
+}

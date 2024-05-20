@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\NoteListController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -46,6 +47,9 @@ Route::group(['middleware' => ['api', 'auth.jwt', 'auth.admin']], function () {
     Route::post('/todos', [TodoController::class, 'save']);
     Route::put('/todos/{id}', [TodoController::class, 'update']);
     Route::delete('/todos/{id}', [TodoController::class, 'delete']);
+
+    Route::get('/categories/{searchTerm}', [TagController::class, 'index']);
+    Route::get('/categories/find/{searchTerm}', [TagController::class, 'findCategoryBySearchTerm']);
 
     Route::get('/user/search/{searchTerm}', [UserController::class, 'findEmailBySearchTerm']);
     Route::get('/user', [UserController::class, 'index']);

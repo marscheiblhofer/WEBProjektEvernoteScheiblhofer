@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {Notelist} from "./notelist";
 import {HttpClient} from "@angular/common/http";
 import {catchError, Observable, retry, throwError} from "rxjs";
-import {Note} from "./note";
+import {Category, Note} from "./note";
 import {Todo} from "./todo";
 import {User} from "./user";
 
@@ -103,5 +103,14 @@ export class NotelistEvernoteService {
 
   private errorHandler(error:Error|any) :Observable<any>{
     return throwError(error)
+  }
+
+  getSearchCategory(searchTerm: string): Observable<Array<Category>> {
+    return this.http.get<Category>(`${this.api}/categories/find/${searchTerm}`)
+      .pipe(retry(3)).pipe(catchError(this.errorHandler));
+  }
+  getCategoryById(id: string): Observable<Array<Category>> {
+    return this.http.get<Category>(`${this.api}/categories/${id}`)
+      .pipe(retry(3)).pipe(catchError(this.errorHandler));
   }
 }
