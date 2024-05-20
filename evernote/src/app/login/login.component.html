@@ -1,6 +1,8 @@
+<!--Profilansicht erstellt mit ChatGPT-->
 @if(!isLoggedIn()){
   <div>
     <h1>Login</h1>
+
     <form  class="ui large form" [formGroup]="loginForm" (ngSubmit)="login()">
       <div class="field">
         <label>E-Mail</label>
@@ -29,8 +31,23 @@
   </div>
 }
 @if(isLoggedIn()){
-  <div>
-    <button type="button" class="ui button" (click)="logout()">Logout</button>
-    <p>{{getUserId()}}</p>
+  <div class="ui container">
+    <div class="ui card centered">
+      <div class="image">
+        <img src="{{user?.picture}}">
+      </div>
+      <div class="content">
+        <a class="header">{{user?.firstname}} {{user?.lastname}}</a>
+      </div>
+      <div class="extra content">
+        <a>
+          <i class="envelope icon"></i>
+          {{user?.email}}
+        </a>
+      </div>
+      <div class="extra content">
+        <button type="button" class="ui button" (click)="logout()">Logout</button>
+      </div>
+    </div>
   </div>
 }

@@ -32,6 +32,8 @@ Route::group(['middleware' => ['api', 'auth.jwt', 'auth.admin']], function () {
     Route::put('/notelists/{id}', [NoteListController::class, 'update']);
     Route::delete('/notelists/{id}', [NoteListController::class, 'delete']);
 
+    Route::put('/notelists/user/{id}', [NoteListController::class, 'addUser']);
+
     Route::get('/notes', [NoteController::class, 'index']);
     Route::get('/notes/{id}', [NoteController::class, 'findByID']);
     Route::get('/notes/search/{searchTerm}', [NoteController::class, 'findBySearchTerm']);
@@ -46,6 +48,7 @@ Route::group(['middleware' => ['api', 'auth.jwt', 'auth.admin']], function () {
     Route::delete('/todos/{id}', [TodoController::class, 'delete']);
 
     Route::get('/user/search/{searchTerm}', [UserController::class, 'findEmailBySearchTerm']);
+    Route::get('/user', [UserController::class, 'index']);
 
     Route::post('auth/logout', [AuthController::class,'logout']);
 });

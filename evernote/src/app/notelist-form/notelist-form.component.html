@@ -12,33 +12,19 @@
     </div>
   </div>
   <div class="ui segment">
-    <div class="ui two column very relaxed grid">
-      <div class="column">
-        <div class="ui toggle checkbox">
-          <input type="checkbox" name="public" formControlName="visibility" id="visibility">
-          <label class="dn" for="visibility" data-content="OFF">{{
-              notelistForm.get('visibility')?.value ?
-                'öffentlich' : 'privat'
-            }}</label>
-        </div>
+    <div class="column">
+      <div class="ui toggle checkbox">
+        <input type="checkbox" name="public" formControlName="visibility" id="visibility">
+        <label class="dn" for="visibility" data-content="OFF">{{
+            notelistForm.get('visibility')?.value ?
+              'öffentlich' : 'privat'
+          }}</label>
       </div>
-
-      @if (notelistForm.get('visibility')?.value) {
-        <app-share-to-user (userSelected)="userSelected($event)"></app-share-to-user>
-
-        <!--<div class="column">
-          <h3>Teilen mit...</h3>
-          <p>Die Liste ist geteilt. Füge andere Benutzer*innen hinzu:</p>
-          <button class="ui button mini green" (click)="addUser()">
-            add
-          </button>
-          <div *ngFor="let userControl of user.controls; let i = index" [formGroupName]="i">
-            <p>Vorname: {{ userControl.get('firstname')?.value }}</p>
-            <button type="button" (click)="addUser()">Benutzer hinzufügen</button>
-          </div>
-        </div>-->
-      }
     </div>
+
+    @if (notelistForm.get('visibility')?.value) {
+      <app-share-to-user [notelist]="notelist" (userSelected)="userSelected($event)"></app-share-to-user>
+    }
   </div>
   <button type="submit" class="ui red button" [disabled]="notelistForm.invalid">Änderungen speichern</button>
 </form>

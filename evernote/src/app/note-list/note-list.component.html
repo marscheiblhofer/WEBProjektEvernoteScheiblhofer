@@ -3,6 +3,7 @@
     <div class="ui two column very relaxed grid">
       <div class="column">
         <h1>{{ notelist.name }}</h1>
+        <p class="meta">Erstellt von {{ notelist.creator?.firstname }} {{ notelist.creator?.lastname }}</p>
         <button class="ui tiny red labeled icon button" (click)="removeNotelist()">
           <i class="remove icon"></i>Notizbuch löschen
         </button>
@@ -38,25 +39,31 @@
             </div>
             <br>
             <h3 *ngIf="note.todos">Todos</h3>
-            @for (todo of note.todos; track todo) {
-              <div class="todo-box">
-                <p><b>{{ todo.title }}</b></p>
-                <p class="todo-small-info" *ngIf="todo.due_date">Fällig bis {{ todo.due_date }}</p>
-                <p>{{ todo.description }}</p>
-                <div *ngIf="todo.completed" class="todo-checked">
-                  <i class="icon checkmark"></i>
-                  <span>Erledigt</span>
+            <div class="ui cards">
+              @for (todo of note.todos; track todo) {
+              <div class="card">
+                <div class="content">
+                  <div class="header">{{todo.title}}</div>
+                  <div class="meta" *ngIf="todo.due_date">Fällig bis {{todo.due_date}}</div>
+                  <div class="description">{{todo.description}}</div>
+                  <div *ngIf="todo.completed">
+                    <i class="icon checkmark"></i>
+                    <span>Erledigt</span>
+                  </div>
+                  <div *ngIf="!todo.completed">
+                    <i class="icon close"></i>
+                    <span>Nicht erledigt</span>
+                  </div>
                 </div>
-                <div class="todo-notchecked" *ngIf="!todo.completed">
-                  <i class="icon close"></i>
-                  <span>Nicht erledigt</span>
+                <div class="extra content">
+                  <div class="ui two buttons">
+                    <div *ngIf="!todo.completed" (click)="todoMarkAsChecked(todo, note.id)" class="ui basic green button">Auf erledigt setzen</div>
+                    <div (click)="todoDelete(todo.id, note.id)" class="ui basic red button">Löschen</div>
+                  </div>
                 </div>
-                <a *ngIf="!todo.completed" (click)="todoMarkAsChecked(todo, note.id)" class="ui tiny green labeled icon button">
-                  <i class="checkmark icon"></i>Auf erledigt setzen
-                </a>
-                <i (click)="todoDelete(todo.id, note.id)" class="trash red icon"></i>
+              </div>
+              }
             </div>
-            }
 
             <br><br>
             <a class="ui tiny yellow labeled icon button" [routerLink]="'../../todo-form/'"

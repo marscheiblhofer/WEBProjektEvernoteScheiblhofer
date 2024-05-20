@@ -17,3 +17,31 @@
     }
   </div>
 </div>
+
+<div class="column">
+  <h3>Teilen mit...</h3>
+  <p>Die Liste ist geteilt. Füge andere Benutzer*innen hinzu:</p>
+
+  <h3>Mit diesen Person ist die Liste schon geteilt:</h3>
+  <table class="ui celled table">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Aktionen</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let user of notelist.user; let i = index">
+    <tr>
+      <td>{{ user.email }}</td>
+      <td>{{ user.firstname }} {{ user.lastname }}</td>
+      <td>
+        <!--<a (click)="deleteUser(i)" class="ui tiny red labeled icon button">
+          <i class="close icon"></i>User entfernen
+        </a>-->
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <!--<button type="button" (click)="addUser()">Benutzer hinzufügen</button>-->
+</div>

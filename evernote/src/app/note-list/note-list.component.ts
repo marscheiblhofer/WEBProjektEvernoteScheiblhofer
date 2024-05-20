@@ -23,20 +23,18 @@ import {NgIf} from "@angular/common";
   styles: ``
 })
 export class NoteListComponent implements OnInit {
-  notelist: Notelist = NotelistFactory.empty();
+  //notelist: Notelist = NotelistFactory.empty();
+  notelist: Notelist | undefined;
   noteDetailsOn: boolean = false;
   note: Note | undefined;
-  todoForm: FormGroup;
   todo = TodoFactory.empty();
   errors: { [key: string]: string } = {};
-
 
   constructor(private route: ActivatedRoute,
               private router: Router,
               private toastr: ToastrService,
               private fb: FormBuilder,
               private service: NotelistEvernoteService,) {
-    this.todoForm = this.fb.group({})
   }
 
   ngOnInit() {
@@ -44,9 +42,7 @@ export class NoteListComponent implements OnInit {
     this.service.getSingleNotelist((params['id']).toString())
       .subscribe((notelist: Notelist) => {
         this.notelist = notelist;
-        this.initTodo();
       });
-    this.initTodo();
   }
 
   showNoteDetails(noteId: number) {
@@ -56,7 +52,7 @@ export class NoteListComponent implements OnInit {
   }
 
   removeNotelist() {
-    if (confirm("Notizbuch wirklich löschen?")) {
+    if (confirm("Notizbuch wirklich löschen?") && this.notelist) {
       this.service.removeNotelist(this.notelist.id).subscribe(
         () => {
           this.router.navigate(['/..'], {relativeTo: this.route});
@@ -78,35 +74,6 @@ export class NoteListComponent implements OnInit {
         );
       }
     }
-  }
-
-  initTodo() {
-    this.todoForm = this.fb.group({
-      id: [this.todo.id],
-      title: [this.todo.title],
-      visibility: [0],
-      completed: [false],
-      description: [this.todo.description],
-      due_date: [this.todo.due_date],
-      notelist_id: [this.notelist.id],
-      note_id: [this.note?.id],
-      responsible_person_id: [this.todo.responsible_person?.id],
-      creator_id: [sessionStorage.getItem('userId')]
-    });
-  }
-
-  submitTodoForm() {
-    const todo: Todo = TodoFactory.fromObject(this.todoForm.value);
-    todo.creator_id = Number(sessionStorage.getItem('userId'));
-    todo.notelist_id = Number(todo.notelist);
-    todo.note_id = Number(this.note?.id);
-    //todo.responsible_person_id = Number(todo.responsible_person);
-    this.service.createTodo(todo).subscribe(() => {
-      this.todo = TodoFactory.empty();
-      this.todoForm.reset(TodoFactory.empty());
-    });
-    if(this.note?.id)
-      this.showNoteDetails(this.note?.id);
   }
 
   todoMarkAsChecked(todo: Todo, noteId: number) {

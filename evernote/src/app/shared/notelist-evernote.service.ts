@@ -85,6 +85,15 @@ export class NotelistEvernoteService {
     return this.http.get<User>(`${this.api}/user/search/${searchTerm}`)
       .pipe(retry(3)).pipe(catchError(this.errorHandler));
   }
+  getUser(): Observable<Array<User>> {
+    return this.http.get<User>(`${this.api}/user`)
+      .pipe(retry(3)).pipe(catchError(this.errorHandler));
+  }
+
+  addUserToList(notelist: Notelist,user:User):Observable<any> {
+    return this.http.put(`${this.api}/notelists/user/${notelist.id}`, user)
+      .pipe(retry(3)).pipe(catchError(this.errorHandler))
+  }
 
   private errorHandler(error:Error|any) :Observable<any>{
     return throwError(error)

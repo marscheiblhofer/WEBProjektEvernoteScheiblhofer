@@ -1,14 +1,16 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {debounceTime, distinctUntilChanged, switchAll, switchMap, tap} from "rxjs";
 import {User} from "../shared/user";
 import {NotelistEvernoteService} from "../shared/notelist-evernote.service";
-import {NgClass} from "@angular/common";
+import {NgClass, NgForOf} from "@angular/common";
+import {Notelist} from "../shared/notelist";
 
 @Component({
   selector: 'app-share-to-user',
   standalone: true,
   imports: [
-    NgClass
+    NgClass,
+    NgForOf
   ],
   templateUrl: './share-to-user.component.html',
   styles: ``
@@ -18,6 +20,7 @@ export class ShareToUserComponent implements OnInit{
   foundUser: User[] = [];
   isLoading = false;
   @Output() userSelected = new EventEmitter<User>();
+  @Input() notelist!: Notelist;
 
   constructor(private service:NotelistEvernoteService) {
   }

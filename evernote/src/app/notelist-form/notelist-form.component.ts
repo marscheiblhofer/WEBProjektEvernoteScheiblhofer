@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NotelistFactory} from "../shared/notelist-factory";
 import {ActivatedRoute, Router} from "@angular/router";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {NotelistFormErrorMessages} from "./notelist-form-error-messages";
 import {Notelist} from "../shared/notelist";
 import {NotelistEvernoteService} from "../shared/notelist-evernote.service";
@@ -15,7 +15,8 @@ import {User} from "../shared/user";
   imports: [
     ReactiveFormsModule,
     NgForOf,
-    ShareToUserComponent
+    ShareToUserComponent,
+    NgIf
   ],
   templateUrl: './notelist-form.component.html',
   styles: ``
@@ -55,54 +56,14 @@ export class NotelistFormComponent implements OnInit{
       name: [this.notelist.name, Validators.required],
       visibility: [this.notelist.visibility, Validators.required],
       creator_id: [this.isUpdatingNotelist ? this.notelist.creator_id : sessionStorage.getItem('userId'), Validators.required],
-      user: this.fb.array([]),
       notes: this.fb.array([])
     });
 
     this.notelistForm.statusChanges.subscribe(()=>this.updateErrorMessages());
-
-    if (this.notelist.user && this.notelist.user.length > 0) {
-      this.addUserFromDB(this.notelist.user);
-    }
   }
-
-  get user(): FormArray {
-    return this.notelistForm.get('user') as FormArray;
-  }
-
-  addUserFromDB(user:any[]): void {
-    this.user.push(this.createUserForm());
-    const userArray = this.notelistForm.get('user') as FormArray;
-    user.forEach(user => {
-      userArray.push(this.fb.group({
-        firstname: [user.firstname, Validators.required]
-      }));
-    });
-  }
-
-  addUser() {
-    this.user.push(this.createUserForm());
-  }
-
-  createUserForm(user?: any): FormGroup {
-    console.log(user);
-    return this.fb.group({
-      firstname: [user ? user.firstname : '', Validators.required],
-      lastname: [user ? user.lastname : '', Validators.required],
-      email: [user ? user.email : '', Validators.required],
-    });
-  }
-
-  deleteUser(index: number): void {
-    // Using type assertion to treat the control as FormGroup
-    const userGroup = this.user.at(index) as FormGroup;
-    this.user.removeAt(index);
-  }
-
 
   submitNotelistForm() {
     const notelist : Notelist = NotelistFactory.fromObject(this.notelistForm.value);
-    console.log(notelist);
     if(this.isUpdatingNotelist){
       this.service.updateNotelist(notelist).subscribe(() => {
         this.router.navigate([`../../notelists`],{relativeTo:this.route});
@@ -128,7 +89,12 @@ export class NotelistFormComponent implements OnInit{
   }
 
   userSelected(user:User) {
-    console.log('selecteduser',user);
+    if(confirm('Benutzer'+user.firstname+' '+user.lastname+'eine Anfrage senden')) {
+      console.log('Anfrage senden', user);
+      this.service.addUserToList(this.notelist, user).subscribe(() => {
+        console.log('gesendet')
+      });
+    }
   }
 }
 
