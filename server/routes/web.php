@@ -20,13 +20,3 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get('/notelists', [NoteListController::class, "index"]);
-
-Route::get('/notelists/{id}', function ($id) {
-    $notelist = Notelist::find($id);
-    return view('notelists.show', compact('notelist'));
-});
-
-Route::get('/notes', [NoteController::class, "index"]);
-Route::get('/todos', [TodoController::class, 'index']);

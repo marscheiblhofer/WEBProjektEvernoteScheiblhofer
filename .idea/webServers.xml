@@ -9,6 +9,13 @@
           </advancedOptions>
         </fileTransfer>
       </webServer>
+      <webServer id="64776b2e-e20e-4aa4-9682-efcb6445340a" name="evernote-frontend" url="http://evernote-frontend.s2110456027.student.kwmhgb.at/">
+        <fileTransfer rootFolder="/usr/home/sstud364/public_html/" accessType="SFTP" host="s2110456027.student.kwmhgb.at" port="222" sshConfigId="e0cd0d57-4fae-421a-ad54-e741798589bc" sshConfig="sstud364@s2110456027.student.kwmhgb.at:222 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>

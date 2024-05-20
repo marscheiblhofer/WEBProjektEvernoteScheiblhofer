@@ -9,6 +9,13 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="evernote-frontend">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/evernote-frontend" local="$PROJECT_DIR$/evernote/dist/evernote/browser" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
     </serverData>
     <option name="myAutoUpload" value="ON_EXPLICIT_SAVE" />
   </component>
