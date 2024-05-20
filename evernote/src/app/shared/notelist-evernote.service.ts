@@ -71,6 +71,16 @@ export class NotelistEvernoteService {
       .pipe(retry(3)).pipe(catchError(this.errorHandler))
   }
 
+  updateTodo(todo:Todo):Observable<any> {
+    return this.http.put<Todo>(`${this.api}/todos/${todo.id}`, todo)
+      .pipe(retry(3)).pipe(catchError(this.errorHandler))
+  }
+
+  deleteTodo(id:number):Observable<any>{
+    return this.http.delete<Todo>(`${this.api}/todos/${id}`)
+      .pipe(retry(3)).pipe(catchError(this.errorHandler))
+  }
+
   getUserEmail(searchTerm: string): Observable<Array<User>> {
     return this.http.get<User>(`${this.api}/user/search/${searchTerm}`)
       .pipe(retry(3)).pipe(catchError(this.errorHandler));

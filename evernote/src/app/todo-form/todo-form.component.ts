@@ -19,6 +19,8 @@ export class TodoFormComponent implements OnInit {
   todoForm: FormGroup;
   todo = TodoFactory.empty();
   errors:{[key:string]:string} = {};
+  notelist = undefined;
+  note = undefined;
 
   constructor(private service: NotelistEvernoteService,
               private fb: FormBuilder,
@@ -28,6 +30,10 @@ export class TodoFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.notelist = params['notelistId'];
+      this.note = params['noteId'];
+    });
     this.initTodo();
   }
 
@@ -39,6 +45,8 @@ export class TodoFormComponent implements OnInit {
       completed: [false],
       description: [this.todo.description],
       due_date: [this.todo.due_date],
+      notelist_id: [this.todo.notelist_id],
+      note_id: [this.todo.note_id],
       //responsible_person_id: [this.todo.responsible_person?.id],
       creator_id: [sessionStorage.getItem('userId')]
     });
@@ -46,11 +54,17 @@ export class TodoFormComponent implements OnInit {
   submitTodoForm() {
     const todo: Todo = TodoFactory.fromObject(this.todoForm.value);
     todo.creator_id = Number(sessionStorage.getItem('userId'));
+    if(this.notelist) todo.notelist_id = Number(this.notelist);
+    if(this.note) todo.note_id = Number(this.note);
     //todo.responsible_person_id = Number(todo.responsible_person);
     this.service.createTodo(todo).subscribe(() => {
       this.todo = TodoFactory.empty();
       this.todoForm.reset(TodoFactory.empty());
-      this.router.navigate(['../todos'],{relativeTo:this.route});
+      if(this.notelist && this.note) {
+        this.router.navigate(['../notelists/'+this.notelist],{relativeTo:this.route});
+      } else {
+        this.router.navigate(['../todos'],{relativeTo:this.route});
+      }
     });
   }
 }

@@ -19,6 +19,7 @@ import {NgIf} from "@angular/common";
     NgIf
   ],
   templateUrl: './note-list.component.html',
+  styleUrl: 'note-list.scss',
   styles: ``
 })
 export class NoteListComponent implements OnInit {
@@ -106,5 +107,21 @@ export class NoteListComponent implements OnInit {
     });
     if(this.note?.id)
       this.showNoteDetails(this.note?.id);
+  }
+
+  todoMarkAsChecked(todo: Todo, noteId: number) {
+    todo.completed = true;
+    this.service.updateTodo(todo).subscribe(() => {
+      this.showNoteDetails(noteId);
+    });
+  }
+
+  todoDelete(id: number, noteId: number) {
+    if(confirm("Todo wirklich löschen?")) {
+      this.service.deleteTodo(id).subscribe(() => {
+        this.showNoteDetails(noteId);
+        this.toastr.success("Todo wurde gelöscht!")
+      });
+    }
   }
 }

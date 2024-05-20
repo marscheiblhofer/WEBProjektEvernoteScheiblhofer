@@ -130,8 +130,11 @@ export class NoteFormComponent implements OnInit{
       (thumbnail: { url:string; }) => thumbnail.url
     );
 
+    if(this.noteForm.value.categories[0].category == null) {
+      this.noteForm.value.categories = [];
+    }
+
     const note : Note = NoteFactory.fromObject(this.noteForm.value);
-    console.log(note);
     if(this.isUpdatingNote){
       this.service.updateNote(note).subscribe(()=> {
         this.router.navigate([`../../notelists/${note.notelist_id}`],{relativeTo:this.route});
@@ -140,7 +143,6 @@ export class NoteFormComponent implements OnInit{
       if(this.notelist_id){
         note.notelist_id = this.notelist_id;
       }
-      console.log(note);
       this.service.createNote(note).subscribe(()=>{
         this.note = NoteFactory.empty();
         this.noteForm.reset(NoteFactory.empty());

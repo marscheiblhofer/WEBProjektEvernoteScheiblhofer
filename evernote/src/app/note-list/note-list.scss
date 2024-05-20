@@ -1,0 +1,17 @@
+.todo-box {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 4px 12px;
+  padding: 5px 10px;
+  margin: 5px 0;
+  background: white;
+
+  .todo-small-info {
+    color: grey;
+    font-size: 0.5rem;
+  }
+  .todo-notchecked {
+    color: red;
+  }
+  .todo-checked {
+    color: yellowgreen;
+  }
+}

@@ -1,10 +1,53 @@
 <h1>Todos</h1>
-<div class="ui middle aligned selection divided list">
-  @for (todo of todos; track todo) {
-    <input type="checkbox" id="todo_{{todo.id}}" name="todo" [checked]="todo.completed">
+<a class="ui tiny yellow labeled icon button" [routerLink]="'../todo-form/'">
+  <i class="plus icon"></i>Todo erstellen
+</a>
+<!--<div class="ui middle aligned selection divided list">-->
+
+  <!--<input type="checkbox" id="todo_{{todo.id}}" name="todo" [checked]="todo.completed">
+  <div>
     <label for="todo_{{todo.id}}">{{todo.title}} | {{todo.completed}}</label><br>
-  }
-  <a class="ui tiny yellow labeled icon button" [routerLink]="'../todo-form/'">
-    <i class="edit icon"></i>Todo erstellen
-  </a>
-</div>
+    <p>{{todo.description}}</p>
+  </div>
+  <div>
+  </div>-->
+  <table class="ui celled table">
+    <thead>
+    <tr>
+      <th>Todo</th>
+      <th>Beschreibung</th>
+      <th>Fällig bis</th>
+      <th>Zugewiesen</th>
+      <th>Status</th>
+      <th>Aktionen</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (todo of todos; track todo) {
+        <tr>
+          <td data-label="title">{{ todo.title }}</td>
+          <td data-label="description">{{ todo.description }}</td>
+          <td data-label="due_date">{{ todo.due_date }}</td>
+          <td data-label="note"><span *ngIf="todo.notelist?.name && todo.note?.title">{{ todo.notelist?.name }} | {{todo.note?.title}}</span></td>
+          <td *ngIf="todo.completed" class="positive">
+            <i class="icon checkmark"></i>
+            <span *ngIf="todo.completed">Erledigt</span>
+          </td>
+          <td *ngIf="!todo.completed" class="negative">
+            <i class="icon close"></i>
+            <span>Offen</span>
+          </td>
+          <td>
+            <a *ngIf="!todo.completed" (click)="todoMarkAsChecked(todo)" class="ui tiny green labeled icon button">
+              <i class="checkmark icon"></i>Auf erledigt setzen
+            </a>
+            <i (click)="todoDelete(todo.id)" class="trash red icon"></i>
+          </td>
+
+        </tr>
+      }
+    </tbody>
+  </table>
+
+
+<!--</div>-->

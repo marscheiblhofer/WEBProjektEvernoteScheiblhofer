@@ -9,7 +9,7 @@
       }
     </div>
     <div class="field">
-      <label for="description">Titel</label>
+      <label for="description">Beschreibung</label>
       <input type="text" id="description" formControlName="description">
       @if(errors['description']){
         <div class="ui negative message"> {{ errors['description'] }}</div>
@@ -23,7 +23,6 @@
         <div class="ui negative message">{{ errors['due_date'] }} </div>
       }
     </div>
-    <!--TODO:visibility-->
     <div class="ui toggle checkbox">
       <input type="checkbox" name="public" formControlName="visibility" id="visibility">
       <label class="dn" for="visibility" data-content="OFF">{{

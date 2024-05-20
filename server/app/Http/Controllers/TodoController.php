@@ -40,4 +40,33 @@ class TodoController extends Controller
             return response()->json("saving todo failed ".$e->getMessage(), 420);
         }
     }
+
+    public function update(Request $request, string $id):JsonResponse
+    {
+        DB::beginTransaction();
+        try {
+            $todo = Todo::where('id', $id)->first();
+            if($todo != null) {
+                $todo->update($request->all());
+                $todo->save();
+            }
+
+            DB::commit();
+            $todo1 = Todo::where('id', $id)->first();
+            return response()->json($todo1, 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json("updating todo failed ".$e->getMessage(), 420);
+        }
+    }
+
+    public function delete(string $id):JsonResponse {
+        $todo = Todo::where('id', $id)->first();
+        if($todo != null) {
+            $todo->delete();
+            return response()->json('todo ('.$id.') successfully deleted', 200);
+        } else {
+            return response()->json('could not delete todo - it does not exist', 422);
+        }
+    }
 }
